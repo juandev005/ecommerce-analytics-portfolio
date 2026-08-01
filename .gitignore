@@ -1,0 +1,38 @@
+# Git
+.git/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/
+env/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Datos 
+data/raw/*.csv
+data/raw/*.json
+data/raw/*.parquet
+data/processed/
+
+
+# Logs
+*.log
+logs/
+
+
+# Comprimidos
+*.zip
+*.tar.gz
+*.xlsx
+
+local/
