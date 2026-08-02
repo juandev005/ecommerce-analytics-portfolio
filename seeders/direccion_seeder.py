@@ -21,7 +21,6 @@ def generate_address(cant_of_addresses = 765):
             random.choice(users["id_usuario"]),
             "Colombia",
             fake.city(),
-            fake.state(),
             fake.postcode(),
             fake.street_address(),
             random.choice([
@@ -34,3 +33,5 @@ def generate_address(cant_of_addresses = 765):
     df = pd.DataFrame(data, columns=["id_direccion", "id_usuario", "pais ciudad", "departamento", "codigo_postal", "direccion", "tipo_direccion"])
 
     df.to_csv(str(file),index=False)
+
+generate_address()

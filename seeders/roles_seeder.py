@@ -29,4 +29,3 @@ def generate_roles_data ():
     df = pd.DataFrame(data, columns=["id_rol", "rol", "descripcion"])
     df.to_csv(str(file),index=False)
 
-generate_roles_data()

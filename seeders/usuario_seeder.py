@@ -33,5 +33,4 @@ def generate_random_user_data (cant_of_users = 1000):
 
     df.to_csv(str(archivo),index=False)
 
-generate_random_user_data(10000)
 

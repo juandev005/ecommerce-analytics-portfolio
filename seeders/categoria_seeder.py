@@ -5,7 +5,7 @@ import random
 def generate_category_data():
     file = Path("./data/raw/categorias.csv")
 
-    if file.exists(): 
+    if file.exists():
         print("El archivo ya existe")
         return
 
@@ -56,5 +56,3 @@ def generate_category_data():
     df = pd.DataFrame(data, columns=["id_categoria", "nombre", "id_categoria_padre"])
 
     df.to_csv(str(file),index=False)
-
-generate_category_data()

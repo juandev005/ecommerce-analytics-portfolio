@@ -37,4 +37,3 @@ def generate_user_rol_data():
 
     df.to_csv(str(file),index=False)
 
-generate_user_rol_data()
