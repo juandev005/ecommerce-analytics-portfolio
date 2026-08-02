@@ -1,7 +1,7 @@
 from faker import Faker
+import pandas as pd
 from pathlib import Path
 import random
-import pandas as pd
 
 def generate_address(cant_of_addresses = 765):
     file = Path("./data/raw/direcciones.csv")
