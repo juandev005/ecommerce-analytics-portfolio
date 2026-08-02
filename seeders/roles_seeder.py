@@ -4,6 +4,11 @@ import random
 
 
 def generate_roles_data ():
+    file = Path("./data/raw/roles.csv")
+
+    if file.exists():
+        print("El archivo ya existe")
+        return
 
     roles = [
         ("Administrador", "Control total del sistema"),
@@ -11,12 +16,6 @@ def generate_roles_data ():
         ("Cliente", "Realiza compras en la tienda"),
         ("Proveedor", "Suministra productos")
     ]
-
-    file = Path("./data/raw/roles.csv")
-
-    if file.exists():
-        print("El archivo ya existe")
-        return
 
     data = []
 

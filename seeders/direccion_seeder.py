@@ -4,14 +4,16 @@ import random
 import pandas as pd
 
 def generate_address(cant_of_addresses = 765):
-    fake = Faker('es_CO')
-    users = pd.read_csv("./data/raw/usuarios.csv")
     file = Path("./data/raw/direcciones.csv")
-    data = []
 
     if file.exists():
         print("El archivo ya existe")
         return
+
+    fake = Faker('es_CO')
+    users = pd.read_csv("./data/raw/usuarios.csv")
+
+    data = []
 
     for i in range(cant_of_addresses):
         data.append([
