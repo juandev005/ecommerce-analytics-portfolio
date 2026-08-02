@@ -3,7 +3,7 @@ import pandas as pd
 from pathlib import Path
 import random
 
-def generate_product(cant_of_products = 50000):
+def generate_product_data(cant_of_products = 50000):
     file = Path("./data/raw/productos.csv")
 
     if file.exists():

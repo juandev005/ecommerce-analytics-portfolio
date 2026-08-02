@@ -3,7 +3,7 @@ import pandas as pd
 from pathlib import Path
 import random
 
-def generate_warehouse(cant_of_warehouses = 50):
+def generate_warehouse_data(cant_of_warehouses = 50):
 
     fake = Faker('es_CO')
 
@@ -29,8 +29,6 @@ def generate_warehouse(cant_of_warehouses = 50):
             random.choice(warehouses),
             fake.city()
         ])
-
-
 
     df = pd.DataFrame(data, columns=["id_almacen", "almacen", "ciudad"])
     df.to_csv("./data/raw/almacenes.csv", index=False)

@@ -3,7 +3,7 @@ import pandas as pd
 from pathlib import Path
 import random
 
-def generate_address(cant_of_addresses = 765):
+def generate_address_data(cant_of_addresses = 765):
     file = Path("./data/raw/direcciones.csv")
 
     if file.exists():
