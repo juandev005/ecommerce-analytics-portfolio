@@ -3,7 +3,7 @@ import pandas as pd
 from pathlib import Path
 import random
 
-def generate_companies_data(cant_of_companies = 1000):
+def generate_company_data(cant_of_companies = 1000):
     file = Path("./data/raw/proveedores.csv")
 
     if file.exists():
@@ -13,7 +13,6 @@ def generate_companies_data(cant_of_companies = 1000):
     fake = Faker()
 
     data = []
-
 
     for i in range(cant_of_companies):
         data.append([
@@ -35,5 +34,3 @@ def generate_companies_data(cant_of_companies = 1000):
 
     df = pd.DataFrame(data, columns=["id_proveedor", "nombre", "correo", "telefono", "pais"])
     df.to_csv(str(file),index=False)
-
-generate_companies_data()

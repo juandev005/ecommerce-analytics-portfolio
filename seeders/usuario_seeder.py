@@ -1,11 +1,9 @@
 from faker import Faker
-import random
 import pandas as pd
 from pathlib import Path
+import random
 
-
-def generate_random_user_data (cant_of_users = 1000):
-    
+def generate_user_data (cant_of_users = 1000):
     file = Path("./data/raw/usuarios.csv")
 
     if file.exists():
@@ -28,9 +26,5 @@ def generate_random_user_data (cant_of_users = 1000):
         ]
         )
 
-
     df = pd.DataFrame(data, columns=["id_usuario", "nombre", "apellido","correo","telefono","fecha_nacimiento","fecha_registro","estado"])
-
-    df.to_csv(str(archivo),index=False)
-
-
+    df.to_csv(str(file),index=False)

@@ -2,7 +2,6 @@ import pandas as pd
 from pathlib import Path
 import random
 
-
 def generate_roles_data ():
     file = Path("./data/raw/roles.csv")
 
@@ -28,4 +27,3 @@ def generate_roles_data ():
 
     df = pd.DataFrame(data, columns=["id_rol", "rol", "descripcion"])
     df.to_csv(str(file),index=False)
-

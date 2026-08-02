@@ -3,8 +3,7 @@ import pandas as pd
 from pathlib import Path
 import random
 
-def generate_products(cant_of_products = 50000):
-
+def generate_product(cant_of_products = 50000):
     file = Path("./data/raw/productos.csv")
 
     if file.exists():
@@ -12,8 +11,6 @@ def generate_products(cant_of_products = 50000):
         return
 
     fake = Faker('es_CO')
-
-    data = []
 
     category_df = pd.read_csv("./data/raw/categorias.csv")
     companies_df = pd.read_csv("./data/raw/proveedores.csv")
@@ -32,12 +29,11 @@ def generate_products(cant_of_products = 50000):
         "Celular", "Silla", "Escritorio", "Lámpara", "Parlante"
     ]
 
-    id_product = 0
+    data = []
 
-    for _ in range(cant_of_products):
-        id_product += 1
+    for i in range(cant_of_products):
         data.append([
-            id_product,
+            i,
             random.choice(id_categories),
             random.choice(id_companies),
             f"{random.choice(adjectives)} {random.choice(objects)}",
@@ -54,7 +50,4 @@ def generate_products(cant_of_products = 50000):
         ])
 
     df = pd.DataFrame(data, columns=["id_producto","id_categoria", "id_proveedor", "nombre", "descripcion", "precio", "stock", "peso", "estado"])
-
-    df.to_csv(str(file), index=False)
-
-
+    df.to_csv(str(file), index=False) 
