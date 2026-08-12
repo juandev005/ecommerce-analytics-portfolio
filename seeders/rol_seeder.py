@@ -2,7 +2,7 @@ import pandas as pd
 from pathlib import Path
 import random
 
-def generate_roles_data ():
+def generate_rol_data ():
     file = Path("./data/raw/roles.csv")
 
     if file.exists():
