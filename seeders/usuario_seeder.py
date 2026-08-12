@@ -1,9 +1,10 @@
+from datetime import datetime, timedelta
 from faker import Faker
 import pandas as pd
 from pathlib import Path
 import random
 
-def generate_user_data (cant_of_users = 1000):
+def generate_user_data (cant_of_users = 25000):
     file = Path("./data/raw/usuarios.csv")
 
     if file.exists():
@@ -21,7 +22,7 @@ def generate_user_data (cant_of_users = 1000):
             fake.unique.email(),
             fake.phone_number(),
             fake.date_of_birth(minimum_age=18,maximum_age=70),
-            fake.date_between(start_date="-5y",end_date="today"),
+            datetime.now() - timedelta(days=random.randint(0, 1825)),
             random.choice(["Activo", "Inactivo","Suspendido", None])
         ]
         )
