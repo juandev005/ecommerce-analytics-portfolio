@@ -3,7 +3,7 @@ import pandas as pd
 from pathlib import Path
 import random
 
-def generate_address_data(cant_of_addresses = 765):
+def generate_address_data(cant_of_addresses = 68565):
     file = Path("./data/raw/direcciones.csv")
 
     if file.exists():
@@ -11,7 +11,7 @@ def generate_address_data(cant_of_addresses = 765):
         return
 
     fake = Faker('es_CO')
-    users = pd.read_csv("./data/raw/usuarios.csv")
+    users = pd.read_csv("./data/raw/usuarios.csv", usecols=["id_usuario"])
 
     data = []
 
