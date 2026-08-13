@@ -3,7 +3,7 @@ import pandas as pd
 from pathlib import Path
 import random
 
-def generate_product_data(cant_of_products = 50000):
+def generate_product_data(cant_of_products = 250000):
     file = Path("./data/raw/productos.csv")
 
     if file.exists():
@@ -12,11 +12,8 @@ def generate_product_data(cant_of_products = 50000):
 
     fake = Faker('es_CO')
 
-    category_df = pd.read_csv("./data/raw/categorias.csv")
-    companies_df = pd.read_csv("./data/raw/proveedores.csv")
-
-    id_categories = category_df["id_categoria"]
-    id_companies = companies_df["id_proveedor"]
+    category_df = pd.read_csv("./data/raw/categorias.csv", usecols=["id_categoria"] )
+    companies_df = pd.read_csv("./data/raw/proveedores.csv",usecols=["id_proveedor"])
 
     adjectives = [
         "Premium", "Pro", "Smart", "Ultra", "Max",
@@ -33,9 +30,9 @@ def generate_product_data(cant_of_products = 50000):
 
     for i in range(cant_of_products):
         data.append([
-            i,
-            random.choice(id_categories),
-            random.choice(id_companies),
+            i+1,
+            random.choice(category_df["id_categoria"]),
+            random.choice(companies_df["id_proveedor"]),
             f"{random.choice(adjectives)} {random.choice(objects)}",
             fake.text(max_nb_chars=120),
             round(random.uniform(20, 5000), 2),
@@ -50,4 +47,4 @@ def generate_product_data(cant_of_products = 50000):
         ])
 
     df = pd.DataFrame(data, columns=["id_producto","id_categoria", "id_proveedor", "nombre", "descripcion", "precio", "stock", "peso", "estado"])
-    df.to_csv(str(file), index=False) 
+    df.to_csv(str(file), index=False)

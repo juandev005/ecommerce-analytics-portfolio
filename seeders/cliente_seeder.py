@@ -1,4 +1,4 @@
-from faker import Faker
+from datetime import datetime, timedelta
 import pandas as pd
 from pathlib import Path
 import random
@@ -10,8 +10,7 @@ def generate_client_data():
         print("El archivo ya existe")
         return
 
-    users = pd.read_csv("./data/raw/usuarios.csv")["id_usuario"]
-    fake = Faker('es_CO')
+    users = pd.read_csv("./data/raw/usuarios.csv", usecols=["id_usuario"])["id_usuario"]
 
     levels = [
         "Bronce",
@@ -29,10 +28,8 @@ def generate_client_data():
             random.choice(users),
             random.choice(levels),
             random.randint(0, 100000),
-            fake.date_between(start_date="-5y",end_date="today")
+            datetime.now() - timedelta(days=random.randint(0, 1825))
         ])
 
     df = pd.DataFrame(data, columns=["id_cliente", "id_usuario", "nivel", "puntos", "fecha_ingreso"])
     df.to_csv(str(file), index=False)
-
-generate_client_data()

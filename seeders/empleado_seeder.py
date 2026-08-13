@@ -1,4 +1,4 @@
-from faker import Faker
+from datetime import datetime, timedelta
 import pandas as pd
 from pathlib import Path
 import random
@@ -8,8 +8,6 @@ def generate_employee_data():
     if file.exists():
         print("El archivo ya existe")
         return
-
-    fake = Faker('es_CO')
 
     users = pd.read_csv("./data/raw/usuarios.csv")["id_usuario"]
     position= [
@@ -30,7 +28,7 @@ def generate_employee_data():
             random.choice(users),
             random.choice(position),
             random.randint(0, 100000),
-            fake.date_between(start_date="-5y",end_date="today")
+            datetime.now() - timedelta(days=random.randint(0, 1825))
         ])
 
     df = pd.DataFrame(data, columns=["id_empleado", "id_usuario", "cargo", "salario", "fecha_contratacion"])

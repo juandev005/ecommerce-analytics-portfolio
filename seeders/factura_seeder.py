@@ -3,7 +3,7 @@ import pandas as pd
 from pathlib import Path
 import random
 
-def generate_order_data():
+def generate_bill_data():
     file = Path("./data/raw/factura.csv")
 
     if file.exists():
@@ -12,7 +12,7 @@ def generate_order_data():
 
     fake = Faker('es_CO')
 
-    orders = pd.read_csv("./data/raw/pedidos.csv").to_dict("list")
+    orders = pd.read_csv("./data/raw/pedidos.csv", usecols=["id_pedido", "total"]).to_dict("list")
 
     data = []
 

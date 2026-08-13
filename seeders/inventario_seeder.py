@@ -3,7 +3,7 @@ import pandas as pd
 from pathlib import Path
 import random
 
-def generate_inventory_data(cant_of_products = 50000):
+def generate_inventory_data(cant_of_products = 175000):
     file = Path("./data/raw/inventario.csv")
 
     if file.exists():
@@ -12,8 +12,8 @@ def generate_inventory_data(cant_of_products = 50000):
 
     fake = Faker()
 
-    products = pd.read_csv("./data/raw/productos.csv").id_producto.tolist()
-    warehouses = pd.read_csv("./data/raw/almacenes.csv").id_almacen.tolist()
+    products = pd.read_csv("./data/raw/productos.csv", usecols=["id_producto"]).id_producto
+    warehouses = pd.read_csv("./data/raw/almacenes.csv", usecols=["id_almacen"]).id_almacen
 
     data = []
 

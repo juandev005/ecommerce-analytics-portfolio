@@ -3,25 +3,19 @@ import pandas as pd
 from pathlib import Path
 import random
 
-def generate_order_data(cant_of_orders = 15000):
+def generate_order_data(cant_of_orders = 150000):
     file = Path("./data/raw/pedidos.csv")
 
     if file.exists():
         print("El archivo ya existe")
         return
 
-    fake = Faker('es_CO')
+    fake = Faker()
 
-    customers = pd.read_csv("./data/raw/clientes.csv")["id_cliente"]
-    employees = pd.read_csv("./data/raw/empleados.csv")["id_empleado"]
+    customers = pd.read_csv("./data/raw/clientes.csv", usecols=["id_cliente"])["id_cliente"]
+    employees = pd.read_csv("./data/raw/empleados.csv", usecols=["id_empleado"])["id_empleado"]
 
-    states = [
-        "Pendiente",
-        "Pagado",
-        "Enviado",
-        "Entregado",
-        "Cancelado"
-    ]
+
 
     data = []
 
@@ -31,7 +25,7 @@ def generate_order_data(cant_of_orders = 15000):
             random.choice(customers),
             random.choice(employees),
             fake.date_between(start_date="-2y", end_date="today"),
-            random.choice(states),
+            "",
             0.0
         ])
 

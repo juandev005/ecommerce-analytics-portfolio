@@ -54,5 +54,4 @@ def generate_category_data():
             ])
 
     df = pd.DataFrame(data, columns=["id_categoria", "nombre", "id_categoria_padre"])
-
     df.to_csv(str(file),index=False)
