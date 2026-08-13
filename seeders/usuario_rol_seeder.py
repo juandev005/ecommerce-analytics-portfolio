@@ -12,27 +12,31 @@ def generate_user_rol_data():
 
     fake = Faker('es_CO')
 
-    users = pd.read_csv("./data/raw/usuarios.csv")
-    roles = pd.read_csv("./data/raw/roles.csv")
-    list_of_roles = roles.id_rol
+    users = pd.read_csv("./data/raw/usuarios.csv", usecols=["id_usuario"])
+    roles = pd.read_csv("./data/raw/roles.csv", usecols=["id_rol"])
 
     data = []
 
-    for i in users.id_usuario:
-        j = random.randint(0, len(list_of_roles)-1)
-        k = random.randint(0, 1)
+    count = 0
+
+    for user in users.id_usuario:
+        has_other_rol = random.choice([True, False])
 
         while True:
+            count += 1
+            i = random.randint(1, len(roles)-1)
+
             data.append([
-                i,
-                list_of_roles[j],
+                count,
+                user,
+                roles.iloc[i,0],
                 fake.date_between(start_date="-5y",end_date="today")
             ])
 
-            if k == 1:
+            if not has_other_rol:
                 break
 
-            k+=1
+            has_other_rol = False
 
-    df = pd.DataFrame(data, columns=["id_usuario", "id_rol", "fecha_ingreso"])
+    df = pd.DataFrame(data, columns=["id_usuario_rol","id_usuario", "id_rol", "fecha_ingreso"])
     df.to_csv(str(file),index=False)
