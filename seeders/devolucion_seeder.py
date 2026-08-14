@@ -14,8 +14,8 @@ def generate_refund_data():
 
     fake = Faker('es_CO')
 
-    pedidos = pd.read_csv("./data/raw/pedidos.csv", usecols=["id_pedido", "estado"])
-    pedidos_entregados = pedidos[pedidos["estado"] == "Cancelado"]
+    orders = pd.read_csv("./data/raw/pedidos.csv", usecols=["id_pedido", "estado"])
+    orders_delivered = orders[orders["estado"] == "Cancelado"]
 
     data = []
 
@@ -35,7 +35,7 @@ def generate_refund_data():
         "Finalizada"
     ]
 
-    ids_pedidos = pedidos_entregados["id_pedido"].to_list()
+    ids_pedidos = orders_delivered["id_pedido"].to_list()
 
     for i in range(len(ids_pedidos)):
         data.append([

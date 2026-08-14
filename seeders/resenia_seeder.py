@@ -13,8 +13,10 @@ def generate_refund_data():
 
     fake = Faker('es_CO')
 
-    clientes = pd.read_csv("./data/raw/clientes.csv")
-    products = pd.read_csv("./data/raw/productos.csv")
+    orders = pd.read_csv("./data/raw/pedidos.csv", usecols=["id_pedido","id_cliente", "estado"])
+    orders_details = pd.read_csv("./data/raw/detalle_pedidos.csv", usecols=["id_pedido", "id_producto"])
+
+    orders_delivered = orders[orders["estado"] == "Entregado"].to_dict("list")
 
     data = []
 
@@ -31,11 +33,17 @@ def generate_refund_data():
         "Producto de excelente calidad."
     ]
 
-    for i in range(int(len(clientes)*0.20)):
+    for i in range(int(len(orders_delivered["id_pedido"])*0.60)):
+
+
+        id_client = orders_delivered["id_cliente"][i]
+        id_pedido = orders_delivered["id_pedido"][i]
+        id_product = orders_details[orders_details["id_pedido"] == id_pedido].to_dict("list")["id_producto"][0]
+
         data.append([
             i+1,
-            random.choice(clientes["id_cliente"]),
-            random.choice(products["id_producto"]),
+            id_client,
+            id_product,
             random.randint(1, 5),
             random.choice(comentarios),
             fake.date_between(start_date="-1y", end_date="today")
@@ -43,4 +51,3 @@ def generate_refund_data():
 
     df = pd.DataFrame(data, columns=["id_resenia", "id_cliente", "id_producto", "calificacion", "comentario", "fecha"])
     df.to_csv(str(file), index=False)
-
