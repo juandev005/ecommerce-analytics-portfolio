@@ -43,5 +43,4 @@ def set_seeder_done(name: str, is_done: bool):
     _SEEDERS_DONE_REGISTRY[name] = is_done
 
 
-__all__ = ["Seeder", "seeder", "get_seeders"]
 exports = [Seeder, seeder, get_seeders]
