@@ -1,7 +1,9 @@
+from .base import seeder
 import pandas as pd
 from pathlib import Path
 import random
 
+@seeder(name="categorias", priority=1)
 def generate_category_data():
     file = Path("./data/raw/categorias.csv")
 

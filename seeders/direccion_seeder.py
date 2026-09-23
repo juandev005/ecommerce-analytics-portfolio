@@ -1,8 +1,10 @@
+from .base import seeder
 from faker import Faker
 import pandas as pd
 from pathlib import Path
 import random
 
+@seeder(name="direcciones", dependencies=["usuarios"], priority=2)
 def generate_address_data(cant_of_addresses = 68565):
     file = Path("./data/raw/direcciones.csv")
 

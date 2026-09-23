@@ -1,9 +1,11 @@
+from .base import seeder
 from datetime import datetime, timedelta
 import pandas as pd
 from pathlib import Path
 import random
 
 
+@seeder(name="clientes", dependencies=["usuarios"], priority=2)
 def generate_client_data():
     file = Path("./data/raw/clientes.csv")
     if file.exists():

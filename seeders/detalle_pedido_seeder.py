@@ -1,8 +1,9 @@
+from .base import seeder
 import pandas as pd
 from pathlib import Path
 import random
 
-
+@seeder(name="detalle_pedidos", dependencies=["pedidos", "productos"], priority=4)
 def generate_order_detail_data():
     file = Path("./data/raw/detalle_pedidos.csv")
 

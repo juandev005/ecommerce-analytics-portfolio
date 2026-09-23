@@ -1,8 +1,10 @@
+from .base import seeder
 from faker import Faker
 import pandas as pd
 from pathlib import Path
 import random
 
+@seeder(name="almacenes", priority=1)
 def generate_warehouse_data(cant_of_warehouses = 50):
 
     fake = Faker('es_CO')

@@ -1,8 +1,10 @@
+from .base import seeder
 from faker import Faker
 import pandas as pd
 from pathlib import Path
 import random
 
+@seeder(name="proveedores", priority=1)
 def generate_company_data(cant_of_companies = 1000):
     file = Path("./data/raw/proveedores.csv")
 

@@ -1,9 +1,11 @@
+from .base import seeder
 from faker import Faker
 import pandas as pd
 from pathlib import Path
 import random
 
-def generate_user_rol_data():
+@seeder(name="roles_usuarios", dependencies=["usuarios", "roles"], priority=2)
+def generate_user_role_data():
     file = Path("./data/raw/roles_usuarios.csv")
 
     if file.exists(): 

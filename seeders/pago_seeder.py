@@ -1,9 +1,10 @@
+from .base import seeder
 from faker import Faker
 import pandas as pd
 from pathlib import Path
 import random
 
-
+@seeder(name="pagos", dependencies=["pedidos", "facturas"], priority=4)
 def generate_payment_data():
     file = Path("./data/raw/pagos.csv")
 
@@ -59,5 +60,3 @@ def generate_payment_data():
     df = pd.DataFrame(data, columns=["id_pago", "id_pedido", "metodo",  "fecha", "monto", "estado"])
     df.to_csv(str(file), index=False)
     orders_csv.to_csv("./data/raw/pedidos.csv", index=False)
-
-generate_payment_data()

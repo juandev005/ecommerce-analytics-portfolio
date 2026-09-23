@@ -1,8 +1,11 @@
+from .base import seeder
 import pandas as pd
 from pathlib import Path
 import random
 
-def generate_rol_data ():
+
+@seeder(name="roles", priority=1)
+def generate_role_data ():
     file = Path("./data/raw/roles.csv")
 
     if file.exists():

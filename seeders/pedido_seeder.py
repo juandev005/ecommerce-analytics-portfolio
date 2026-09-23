@@ -1,8 +1,10 @@
+from .base import seeder
 from faker import Faker
 import pandas as pd
 from pathlib import Path
 import random
 
+@seeder(name="pedidos", dependencies=["clientes", "empleados"], priority=3)
 def generate_order_data(cant_of_orders = 150000):
     file = Path("./data/raw/pedidos.csv")
 

@@ -1,10 +1,11 @@
+from .base import seeder
 from faker import Faker
 import pandas as pd
 from pathlib import Path
 import random
 
-
-def generate_refund_data():
+@seeder(name="resenias", dependencies=["pedidos", "detalle_pedidos"], priority=3)
+def generate_review_data():
     file = Path("./data/raw/resenias.csv")
 
     if file.exists():

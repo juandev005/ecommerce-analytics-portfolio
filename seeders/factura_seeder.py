@@ -1,8 +1,10 @@
+from .base import seeder
 from faker import Faker
 import pandas as pd
 from pathlib import Path
 import random
 
+@seeder(name="facturas", dependencies=["pedidos"], priority=4)
 def generate_bill_data():
     file = Path("./data/raw/factura.csv")
 
@@ -10,7 +12,7 @@ def generate_bill_data():
         print("El archivo ya existe")
         return
 
-    fake = Faker('es_CO')
+    fake = Faker()
 
     orders = pd.read_csv("./data/raw/pedidos.csv", usecols=["id_pedido", "total"]).to_dict("list")
 

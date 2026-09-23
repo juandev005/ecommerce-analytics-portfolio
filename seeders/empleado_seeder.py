@@ -1,7 +1,10 @@
+from .base import seeder
 from datetime import datetime, timedelta
 import pandas as pd
 from pathlib import Path
 import random
+
+@seeder(name="empleados", dependencies=["usuarios"], priority=2)
 def generate_employee_data():
     file = Path("./data/raw/empleados.csv")
 

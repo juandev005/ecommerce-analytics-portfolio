@@ -1,9 +1,11 @@
+from .base import seeder
 from datetime import datetime, timedelta
 from faker import Faker
 import pandas as pd
 from pathlib import Path
 import random
 
+@seeder(name="usuarios", priority=1)
 def generate_user_data (cant_of_users = 25000):
     file = Path("./data/raw/usuarios.csv")
 

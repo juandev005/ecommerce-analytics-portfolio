@@ -1,10 +1,11 @@
+from .base import seeder
 from faker import Faker
 import pandas as pd
 from pathlib import Path 
 import random
 
 
-
+@seeder(name="devoluciones", dependencies=["pedidos"], priority=4)
 def generate_refund_data():
     file = Path("./data/raw/devoluciones.csv")
 

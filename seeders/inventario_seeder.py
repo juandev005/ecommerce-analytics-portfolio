@@ -1,8 +1,10 @@
+from .base import seeder
 from faker import Faker
 import pandas as pd
 from pathlib import Path
 import random
 
+@seeder(name="inventario", dependencies=["productos", "almacenes"], priority=3)
 def generate_inventory_data(cant_of_products = 175000):
     file = Path("./data/raw/inventario.csv")
 
