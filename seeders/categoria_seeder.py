@@ -2,6 +2,7 @@ from .base import seeder
 import pandas as pd
 from pathlib import Path
 import random
+from  .base import set_seeder_done
 
 @seeder(name="categorias", priority=1)
 def generate_category_data():
@@ -57,3 +58,5 @@ def generate_category_data():
 
     df = pd.DataFrame(data, columns=["id_categoria", "nombre", "id_categoria_padre"])
     df.to_csv(str(file),index=False)
+
+    set_seeder_done("categorias", True)

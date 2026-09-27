@@ -4,6 +4,7 @@ from faker import Faker
 import pandas as pd
 from pathlib import Path
 import random
+from  .base import set_seeder_done
 
 @seeder(name="usuarios", priority=1)
 def generate_user_data (cant_of_users = 25000):
@@ -31,3 +32,5 @@ def generate_user_data (cant_of_users = 25000):
 
     df = pd.DataFrame(data, columns=["id_usuario", "nombre", "apellido","correo","telefono","fecha_nacimiento","fecha_registro","estado"])
     df.to_csv(str(file),index=False)
+
+    set_seeder_done("usuarios", True)

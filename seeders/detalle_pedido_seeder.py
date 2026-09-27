@@ -2,6 +2,7 @@ from .base import seeder
 import pandas as pd
 from pathlib import Path
 import random
+from  .base import set_seeder_done
 
 @seeder(name="detalle_pedidos", dependencies=["pedidos", "productos"], priority=4)
 def generate_order_detail_data():
@@ -43,3 +44,5 @@ def generate_order_detail_data():
     df.to_csv(str(file), index=False)
     
     orders.to_csv(("./data/raw/pedidos.csv"), index=False)
+
+    set_seeder_done("detalle_pedidos", True)

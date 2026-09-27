@@ -3,6 +3,7 @@ from faker import Faker
 import pandas as pd
 from pathlib import Path
 import random
+from  .base import set_seeder_done
 
 @seeder(name="envios", dependencies=["pedidos", "direcciones"], priority=4)
 def generate_shipment_data():
@@ -65,3 +66,5 @@ def generate_shipment_data():
     df = pd.DataFrame(data, columns=["id_envio", "id_pedido", "direccion", "transportadora", "guia", "fecha_envio", "fecha_entrega", "estado"])
     df.to_csv(str(file), index=False)
     orders_csv.to_csv("./data/raw/pedidos.csv", index=False)
+
+    set_seeder_done("envios",True)

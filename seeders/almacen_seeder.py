@@ -3,6 +3,7 @@ from faker import Faker
 import pandas as pd
 from pathlib import Path
 import random
+from  .base import set_seeder_done
 
 @seeder(name="almacenes", priority=1)
 def generate_warehouse_data(cant_of_warehouses = 50):
@@ -34,3 +35,5 @@ def generate_warehouse_data(cant_of_warehouses = 50):
 
     df = pd.DataFrame(data, columns=["id_almacen", "almacen", "ciudad"])
     df.to_csv("./data/raw/almacenes.csv", index=False)
+
+    set_seeder_done("almacenes", True)

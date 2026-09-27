@@ -3,6 +3,7 @@ from faker import Faker
 import pandas as pd
 from pathlib import Path
 import random
+from  .base import set_seeder_done
 
 @seeder(name="inventario", dependencies=["productos", "almacenes"], priority=3)
 def generate_inventory_data(cant_of_products = 175000):
@@ -34,3 +35,5 @@ def generate_inventory_data(cant_of_products = 175000):
 
     df = pd.DataFrame(data, columns=["id_inventario", "id_producto", "id_almacen", "cantidad", "fecha_ingreso"])
     df.to_csv(str(Path("./data/raw/inventario.csv")), index=False)
+
+    set_seeder_done("inventario", True)

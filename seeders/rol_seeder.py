@@ -2,7 +2,7 @@ from .base import seeder
 import pandas as pd
 from pathlib import Path
 import random
-
+from  .base import set_seeder_done
 
 @seeder(name="roles", priority=1)
 def generate_role_data ():
@@ -30,3 +30,5 @@ def generate_role_data ():
 
     df = pd.DataFrame(data, columns=["id_rol", "rol", "descripcion"])
     df.to_csv(str(file),index=False)
+
+    set_seeder_done("roles", True)

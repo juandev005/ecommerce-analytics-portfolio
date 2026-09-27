@@ -3,6 +3,7 @@ from faker import Faker
 import pandas as pd
 from pathlib import Path
 import random
+from  .base import set_seeder_done
 
 @seeder(name="pedidos", dependencies=["clientes", "empleados"], priority=3)
 def generate_order_data(cant_of_orders = 150000):
@@ -33,3 +34,5 @@ def generate_order_data(cant_of_orders = 150000):
 
     df = pd.DataFrame(data, columns=["id_pedido", "id_cliente", "id_empleado", "fecha_pedido", "estado", "total"])
     df.to_csv(str(file), index=False)
+
+    set_seeder_done("pedidos", True)

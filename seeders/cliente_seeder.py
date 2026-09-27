@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 import pandas as pd
 from pathlib import Path
 import random
-
+from  .base import set_seeder_done
 
 @seeder(name="clientes", dependencies=["usuarios"], priority=2)
 def generate_client_data():
@@ -35,3 +35,5 @@ def generate_client_data():
 
     df = pd.DataFrame(data, columns=["id_cliente", "id_usuario", "nivel", "puntos", "fecha_ingreso"])
     df.to_csv(str(file), index=False)
+
+    set_seeder_done("clientes", True)

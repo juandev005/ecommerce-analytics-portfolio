@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 import pandas as pd
 from pathlib import Path
 import random
+from  .base import set_seeder_done
 
 @seeder(name="empleados", dependencies=["usuarios"], priority=2)
 def generate_employee_data():
@@ -36,3 +37,5 @@ def generate_employee_data():
 
     df = pd.DataFrame(data, columns=["id_empleado", "id_usuario", "cargo", "salario", "fecha_contratacion"])
     df.to_csv(str(file), index=False)
+
+    set_seeder_done("empleados", True)

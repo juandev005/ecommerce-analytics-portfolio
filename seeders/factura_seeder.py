@@ -3,6 +3,7 @@ from faker import Faker
 import pandas as pd
 from pathlib import Path
 import random
+from  .base import set_seeder_done
 
 @seeder(name="facturas", dependencies=["pedidos"], priority=4)
 def generate_bill_data():
@@ -38,3 +39,5 @@ def generate_bill_data():
 
     df = pd.DataFrame(data, columns=["id_factura", "id_pedido", "numero_factura", "fecha_emision", "impuestos", "total_factura"])
     df.to_csv(str(file), index=False)
+
+    set_seeder_done("facturas", True)

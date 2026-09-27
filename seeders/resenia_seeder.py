@@ -3,6 +3,7 @@ from faker import Faker
 import pandas as pd
 from pathlib import Path
 import random
+from  .base import set_seeder_done
 
 @seeder(name="resenias", dependencies=["pedidos", "detalle_pedidos"], priority=3)
 def generate_review_data():
@@ -52,3 +53,5 @@ def generate_review_data():
 
     df = pd.DataFrame(data, columns=["id_resenia", "id_cliente", "id_producto", "calificacion", "comentario", "fecha"])
     df.to_csv(str(file), index=False)
+
+    set_seeder_done("resenias", True)

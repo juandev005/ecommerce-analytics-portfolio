@@ -3,6 +3,7 @@ from faker import Faker
 import pandas as pd
 from pathlib import Path
 import random
+from  .base import set_seeder_done
 
 @seeder(name="roles_usuarios", dependencies=["usuarios", "roles"], priority=2)
 def generate_user_role_data():
@@ -42,3 +43,5 @@ def generate_user_role_data():
 
     df = pd.DataFrame(data, columns=["id_usuario_rol","id_usuario", "id_rol", "fecha_ingreso"])
     df.to_csv(str(file),index=False)
+
+    set_seeder_done("roles_usuarios", True)

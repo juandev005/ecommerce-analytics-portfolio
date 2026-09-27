@@ -3,6 +3,7 @@ from faker import Faker
 import pandas as pd
 from pathlib import Path
 import random
+from  .base import set_seeder_done
 
 @seeder(name="productos", dependencies=["categorias", "proveedores"], priority=2)
 def generate_product_data(cant_of_products = 250000):
@@ -50,3 +51,5 @@ def generate_product_data(cant_of_products = 250000):
 
     df = pd.DataFrame(data, columns=["id_producto","id_categoria", "id_proveedor", "nombre", "descripcion", "precio", "stock", "peso", "estado"])
     df.to_csv(str(file), index=False)
+
+    set_seeder_done("productos", True)
