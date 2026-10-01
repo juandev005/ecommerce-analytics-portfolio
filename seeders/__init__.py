@@ -15,7 +15,7 @@ from .proveedor_seeder import generate_company_data
 from .resenia_seeder import generate_review_data
 from .rol_seeder import generate_role_data
 from .usuario_seeder import generate_user_data
-from .usuario_rol_seeder import generate_user_role_data
+from .usuario_rol_seeder import generate_role_user_data
 
 __all__ = [
     "generate_warehouse_data",
@@ -35,5 +35,5 @@ __all__ = [
     "generate_review_data",
     "generate_role_data",
     "generate_user_data",
-    "generate_user_role_data",
+    "generate_role_user_data",
 ]

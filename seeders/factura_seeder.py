@@ -1,9 +1,8 @@
-from .base import seeder
+from .base_seeder import seeder, set_seeder_done
 from faker import Faker
 import pandas as pd
 from pathlib import Path
 import random
-from  .base import set_seeder_done
 
 @seeder(name="facturas", dependencies=["pedidos"], priority=4)
 def generate_bill_data():

@@ -1,4 +1,4 @@
-from  .base import get_seeders, set_seeder_done, get_seeders_done
+from  .base_seeder import get_seeders, set_seeder_done, get_seeders_done
 
 
 def seeding_seeder(name):
@@ -23,7 +23,7 @@ def seeding_seeder(name):
     return print(f"No se encontro el seeder {name}")
 
 
-def seeding_seeder_with_dependencies(name):
+def seeding__with_dependencies(name):
 
     seeders = get_seeders()
     pending_dependencies : dict[int , list] = {}
@@ -47,7 +47,7 @@ def seeding_seeder_with_dependencies(name):
 
             for priority in pending_dependencies.values():
                 for seeder in priority:
-                    seeding_seeder_with_dependencies(seeder)
+                    seeding__with_dependencies(seeder)
 
         seeders[name].execute()
         return print(f"Seeder {name} ejecutados con exito\nDependencias generadas: {seeders[name].dependencies}\n\n")
@@ -58,5 +58,6 @@ def seeding_seeder_with_dependencies(name):
 def seeding_all ():
     seeders = get_seeders()
     for seeder in seeders.keys():
-        seeding_seeder_with_dependencies(seeder)
-seeding_seeder("usuarios")
+        seeding__with_dependencies(seeder)
+
+seeding__with_dependencies("roles_usuarios")
