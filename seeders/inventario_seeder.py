@@ -1,9 +1,8 @@
-from .base import seeder
-from faker import Faker
+from .base_seeder import seeder, set_seeder_done
 import pandas as pd
 from pathlib import Path
 import random
-from  .base import set_seeder_done
+
 
 @seeder(name="inventario", dependencies=["productos", "almacenes"], priority=3)
 def generate_inventory_data(cant_of_products = 175000):
