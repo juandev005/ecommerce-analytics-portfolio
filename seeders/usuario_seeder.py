@@ -1,10 +1,9 @@
-from .base import seeder
+from .base_seeder import seeder, set_seeder_done
 from datetime import datetime, timedelta
 from faker import Faker
 import pandas as pd
 from pathlib import Path
 import random
-from  .base import set_seeder_done
 
 @seeder(name="usuarios", priority=1)
 def generate_user_data (cant_of_users = 25000):

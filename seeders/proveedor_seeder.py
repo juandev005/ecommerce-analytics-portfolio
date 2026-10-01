@@ -1,9 +1,9 @@
-from .base import seeder
+from .base_seeder import seeder, set_seeder_done
 from faker import Faker
 import pandas as pd
 from pathlib import Path
 import random
-from  .base import set_seeder_done
+
 
 @seeder(name="proveedores", priority=1)
 def generate_company_data(cant_of_companies = 1000):
