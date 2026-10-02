@@ -1,14 +1,19 @@
+import logging
+
 from .base_seeder import seeder, set_seeder_done
 import pandas as pd
 from pathlib import Path
 import random
+
+logger = logging.getLogger(__name__)
+
 
 @seeder(name="categorias", priority=1)
 def generate_category_data():
     file = Path("./data/raw/categorias.csv")
 
     if file.exists():
-        print("El archivo ya existe")
+        logger.info("El archivo ya existe, se omite generación: %s", file)
         return
 
     main_categories = [

@@ -1,3 +1,5 @@
+import logging
+
 from .base_seeder import seeder, set_seeder_done
 from src.core.errors import require_positive
 from datetime import datetime, timedelta
@@ -6,6 +8,9 @@ import pandas as pd
 from pathlib import Path
 import random
 
+logger = logging.getLogger(__name__)
+
+
 @seeder(name="usuarios", priority=1)
 def generate_user_data (cant_of_users = 25000):
     require_positive(cant_of_users, name="cant_of_users")
@@ -13,7 +18,7 @@ def generate_user_data (cant_of_users = 25000):
     file = Path("./data/raw/usuarios.csv")
 
     if file.exists():
-        print("El archivo ya existe")
+        logger.info("El archivo ya existe, se omite generación: %s", file)
         return
 
     fake = Faker('es_CO')

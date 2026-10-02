@@ -1,15 +1,20 @@
+import logging
+
 from .base_seeder import seeder, set_seeder_done
 from src.core.errors import read_dependency_csv, require_columns
 import pandas as pd
 from pathlib import Path
 import random
 
+logger = logging.getLogger(__name__)
+
+
 @seeder(name="detalle_pedidos", dependencies=["pedidos", "productos"], priority=4)
 def generate_order_detail_data():
     file = Path("./data/raw/detalle_pedidos.csv")
 
     if file.exists():
-        print("El archivo ya existe")
+        logger.info("El archivo ya existe, se omite generación: %s", file)
         return
 
     orders = read_dependency_csv("./data/raw/pedidos.csv", context="detalle_pedidos")

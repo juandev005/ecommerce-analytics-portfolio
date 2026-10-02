@@ -1,3 +1,5 @@
+import logging
+
 from .base_seeder import seeder, set_seeder_done
 from src.core.errors import read_dependency_csv
 from datetime import datetime, timedelta
@@ -5,13 +7,15 @@ import pandas as pd
 from pathlib import Path
 import random
 
+logger = logging.getLogger(__name__)
+
 
 @seeder(name="empleados", dependencies=["usuarios"], priority=2)
 def generate_employee_data():
     file = Path("./data/raw/empleados.csv")
 
     if file.exists():
-        print("El archivo ya existe")
+        logger.info("El archivo ya existe, se omite generación: %s", file)
         return
 
     users = read_dependency_csv(
