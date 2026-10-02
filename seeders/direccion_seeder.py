@@ -1,4 +1,5 @@
 from .base_seeder import seeder, set_seeder_done
+from src.core.errors import require_positive, read_dependency_csv
 from faker import Faker
 import pandas as pd
 from pathlib import Path
@@ -7,6 +8,8 @@ import random
 
 @seeder(name="direcciones", dependencies=["usuarios"], priority=2)
 def generate_address_data(cant_of_addresses = 68565):
+    require_positive(cant_of_addresses, name="cant_of_addresses")
+
     file = Path("./data/raw/direcciones.csv")
 
     if file.exists():
@@ -14,7 +17,9 @@ def generate_address_data(cant_of_addresses = 68565):
         return
 
     fake = Faker('es_CO')
-    users = pd.read_csv("./data/raw/usuarios.csv", usecols=["id_usuario"])
+    users = read_dependency_csv(
+        "./data/raw/usuarios.csv", usecols=["id_usuario"], context="direcciones"
+    )
 
     data = []
 

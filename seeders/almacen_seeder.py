@@ -1,4 +1,5 @@
 from .base_seeder import seeder, set_seeder_done
+from src.core.errors import require_positive
 from faker import Faker
 import pandas as pd
 from pathlib import Path
@@ -6,6 +7,7 @@ import random
 
 @seeder(name="almacenes", priority=1)
 def generate_warehouse_data(cant_of_warehouses = 50):
+    require_positive(cant_of_warehouses, name="cant_of_warehouses")
 
     fake = Faker('es_CO')
 
@@ -35,4 +37,4 @@ def generate_warehouse_data(cant_of_warehouses = 50):
     df = pd.DataFrame(data, columns=["id_almacen", "almacen", "ciudad"])
     df.to_csv("./data/raw/almacenes.csv", index=False)
 
-    set_seeders_done("almacenes", True)
+    set_seeder_done("almacenes", True)

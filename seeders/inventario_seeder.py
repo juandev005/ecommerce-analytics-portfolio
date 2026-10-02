@@ -1,11 +1,16 @@
 from .base_seeder import seeder, set_seeder_done
+from src.core.errors import require_positive, read_dependency_csv
+from faker import Faker
 import pandas as pd
 from pathlib import Path
 import random
 
 
+
 @seeder(name="inventario", dependencies=["productos", "almacenes"], priority=3)
 def generate_inventory_data(cant_of_products = 175000):
+    require_positive(cant_of_products, name="cant_of_products")
+
     file = Path("./data/raw/inventario.csv")
 
     if file.exists():
@@ -14,8 +19,12 @@ def generate_inventory_data(cant_of_products = 175000):
 
     fake = Faker()
 
-    products = pd.read_csv("./data/raw/productos.csv", usecols=["id_producto"]).id_producto
-    warehouses = pd.read_csv("./data/raw/almacenes.csv", usecols=["id_almacen"]).id_almacen
+    products = read_dependency_csv(
+        "./data/raw/productos.csv", usecols=["id_producto"], context="inventario"
+    ).id_producto
+    warehouses = read_dependency_csv(
+        "./data/raw/almacenes.csv", usecols=["id_almacen"], context="inventario"
+    ).id_almacen
 
     data = []
 

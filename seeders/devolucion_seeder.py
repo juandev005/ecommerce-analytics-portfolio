@@ -1,7 +1,8 @@
 from .base_seeder import seeder, set_seeder_done
+from src.core.errors import read_dependency_csv
 from faker import Faker
 import pandas as pd
-from pathlib import Path 
+from pathlib import Path
 import random
 
 
@@ -15,7 +16,9 @@ def generate_refund_data():
 
     fake = Faker('es_CO')
 
-    orders = pd.read_csv("./data/raw/pedidos.csv", usecols=["id_pedido", "estado"])
+    orders = read_dependency_csv(
+        "./data/raw/pedidos.csv", usecols=["id_pedido", "estado"], context="devoluciones"
+    )
     orders_delivered = orders[orders["estado"] == "Cancelado"]
 
     data = []

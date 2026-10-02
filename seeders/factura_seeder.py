@@ -1,4 +1,5 @@
 from .base_seeder import seeder, set_seeder_done
+from src.core.errors import read_dependency_csv
 from faker import Faker
 import pandas as pd
 from pathlib import Path
@@ -14,7 +15,9 @@ def generate_bill_data():
 
     fake = Faker()
 
-    orders = pd.read_csv("./data/raw/pedidos.csv", usecols=["id_pedido", "total"]).to_dict("list")
+    orders = read_dependency_csv(
+        "./data/raw/pedidos.csv", usecols=["id_pedido", "total"], context="facturas"
+    ).to_dict("list")
 
     data = []
 

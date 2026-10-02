@@ -1,4 +1,5 @@
 from .base_seeder import seeder, set_seeder_done
+from src.core.errors import read_dependency_csv, require_columns
 from faker import Faker
 import pandas as pd
 from pathlib import Path
@@ -15,8 +16,11 @@ def generate_payment_data():
 
     fake = Faker('es_CO')
 
-    orders_csv = pd.read_csv("./data/raw/pedidos.csv")
-    bill_csv = pd.read_csv("./data/raw/factura.csv", usecols=["id_pedido", "total_factura"])
+    orders_csv = read_dependency_csv("./data/raw/pedidos.csv", context="pagos")
+    require_columns(orders_csv, ["id_pedido", "estado"], context="pagos (pedidos.csv)")
+    bill_csv = read_dependency_csv(
+        "./data/raw/factura.csv", usecols=["id_pedido", "total_factura"], context="pagos"
+    )
 
     orders =  orders_csv[["id_pedido"]]
 
