@@ -1,63 +1,100 @@
-from  .base_seeder import get_seeders, set_seeder_done, get_seeders_done
+from .base_seeder import get_seeders, get_seeder, set_seeder_done, get_seeders_done
+from src.core.exceptions import SeederError, SeederDependencyError, SeederExecutionError, SeederBatchError
 
 
-def seeding_seeder(name):
+def seeding_seeder(name: str) -> None:
+    """Ejecuta un único seeder sin resolver dependencias: si falta alguna, falla."""
+    seeder_def = get_seeder(name)  # lanza SeederNotFoundError si no existe
 
-    seeders = get_seeders()
-    pending_dependencies = []
+    pending_dependencies = [
+        dependency for dependency in seeder_def.dependencies
+        if not get_seeders_done().get(dependency)
+    ]
 
-    if name in seeders.keys():
+    if pending_dependencies:
+        raise SeederDependencyError(
+            f"'{name}' tiene dependencias pendientes: {pending_dependencies}. "
+            "Puede que también falten seeders de mayor prioridad.",
+            details={"seeder": name, "pendientes": pending_dependencies},
+        )
 
-        for dependency in seeders[name].dependencies:
-            if not get_seeders_done().get(dependency):
-                pending_dependencies.append(dependency)
+    try:
+        seeder_def.execute()
+    except Exception as exc:
+        raise SeederExecutionError(
+            f"Error al ejecutar el seeder '{name}': {exc}",
+            details={"seeder": name},
+            cause=exc,
+        ) from exc
 
-        if pending_dependencies:
-            e = f"Los seeders [{', '.join(pending_dependencies)}] son dependientes de {name} y no fueron ejecutados\n\nPuede que tambien falte seeders de mayor prioridad**"
-            return print(e)
-
-        seeders[name].execute()
-        return print(f"Seeder {name} ejecutados con exito")
-
-
-    return print(f"No se encontro el seeder {name}")
-
-
-def seeding__with_dependencies(name):
-
-    seeders = get_seeders()
-    pending_dependencies : dict[int , list] = {}
-
-    if name in seeders.keys():
-
-        for dependency in seeders[name].dependencies:
-            if not get_seeders_done().get(dependency):
-                priority = seeders[dependency].priority
-
-                if not pending_dependencies or not priority in pending_dependencies.keys() :
-                    pending_dependencies[priority] = []
+    set_seeder_done(name, True)
+    print(f"Seeder '{name}' ejecutado con éxito")
 
 
-                pending_dependencies[priority].append(seeders[dependency].name)
+def seeding__with_dependencies(name: str, _resolving: frozenset[str] = frozenset()) -> None:
+    """Ejecuta un seeder resolviendo primero, de forma recursiva, sus dependencias pendientes."""
+    seeder_def = get_seeder(name)  # lanza SeederNotFoundError si no existe
+
+    if name in _resolving:
+        raise SeederDependencyError(
+            f"Dependencia circular detectada al resolver '{name}'",
+            details={"seeder": name, "cadena": sorted(_resolving)},
+        )
+
+    _resolving = _resolving | {name}
+
+    pending_by_priority: dict[int, list[str]] = {}
+    for dependency in seeder_def.dependencies:
+        if not get_seeders_done().get(dependency):
+            dependency_def = get_seeder(dependency)
+            pending_by_priority.setdefault(dependency_def.priority, []).append(dependency_def.name)
+
+    for priority in sorted(pending_by_priority):
+        for dependency_name in pending_by_priority[priority]:
+            # No se envuelve en SeederExecutionError: si ya es un SeederError
+            # (dependencia circular, seeder no encontrado, fallo de ejecución),
+            # se deja propagar tal cual para no perder la causa real.
+            seeding__with_dependencies(dependency_name, _resolving)
+
+    try:
+        seeder_def.execute()
+    except Exception as exc:
+        raise SeederExecutionError(
+            f"Error al ejecutar el seeder '{name}': {exc}",
+            details={"seeder": name},
+            cause=exc,
+        ) from exc
+
+    set_seeder_done(name, True)
+    print(f"Seeder '{name}' ejecutado con éxito (dependencias: {seeder_def.dependencies})")
 
 
-        if pending_dependencies:
+def seeding_all() -> None:
+    """Ejecuta todos los seeders registrados.
 
-            pending_dependencies =  dict(sorted(pending_dependencies.items()))
+    Comportamiento ante fallos: un seeder roto NO detiene a los demás (fail-soft).
+    Cada fallo se registra y se sigue con el siguiente; al final, si hubo alguno,
+    se lanza un único SeederBatchError con el resumen de todos.
+    """
+    errors: dict[str, SeederError] = {}
 
-            for priority in pending_dependencies.values():
-                for seeder in priority:
-                    seeding__with_dependencies(seeder)
+    for name in get_seeders():
+        if get_seeders_done().get(name):
+            continue
+        try:
+            seeding__with_dependencies(name)
+        except SeederError as exc:
+            print(f"Seeder '{name}' falló: {exc}")
+            errors[name] = exc
 
-        seeders[name].execute()
-        return print(f"Seeder {name} ejecutados con exito\nDependencias generadas: {seeders[name].dependencies}\n\n")
+    if errors:
+        raise SeederBatchError(
+            f"{len(errors)} seeder(s) fallaron: {sorted(errors)}",
+            details={"failures": {k: str(v) for k, v in errors.items()}},
+        )
 
-    return print(f"No se encontro el seeder {name}")
+    print("Todos los seeders se ejecutaron con éxito")
 
 
-def seeding_all ():
-    seeders = get_seeders()
-    for seeder in seeders.keys():
-        seeding__with_dependencies(seeder)
-
-seeding__with_dependencies("roles_usuarios")
+if __name__ == "__main__":
+    seeding_all()
