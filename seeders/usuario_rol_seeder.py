@@ -1,4 +1,5 @@
 from .base_seeder import seeder, set_seeder_done
+from src.core.errors import read_dependency_csv
 from faker import Faker
 import pandas as pd
 from pathlib import Path
@@ -8,16 +9,22 @@ import random
 def generate_role_user_data():
     file = Path("./data/raw/roles_usuarios.csv")
 
-    if file.exists(): 
+    if file.exists():
         print("El archivo ya existe")
         return
 
     fake = Faker('es_CO')
 
-    roles = pd.read_csv("./data/raw/roles.csv", usecols=["id_rol", "rol"])
+    roles = read_dependency_csv(
+        "./data/raw/roles.csv", usecols=["id_rol", "rol"], context="roles_usuarios"
+    )
 
-    employees = pd.read_csv("./data/raw/empleados.csv", usecols=["id_empleado"])
-    customers = pd.read_csv("./data/raw/clientes.csv", usecols=["id_cliente"])
+    employees = read_dependency_csv(
+        "./data/raw/empleados.csv", usecols=["id_empleado"], context="roles_usuarios"
+    )
+    customers = read_dependency_csv(
+        "./data/raw/clientes.csv", usecols=["id_cliente"], context="roles_usuarios"
+    )
 
     roles_employees = roles[roles.rol.isin(["Administrador", "Empleado"])].id_rol.values
     roles_customers = roles[roles.rol.isin(["Cliente", "Proveedor"])].id_rol.values

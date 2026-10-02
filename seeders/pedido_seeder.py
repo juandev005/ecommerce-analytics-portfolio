@@ -1,4 +1,5 @@
 from .base_seeder import seeder, set_seeder_done
+from src.core.errors import require_positive, read_dependency_csv
 from faker import Faker
 import pandas as pd
 from pathlib import Path
@@ -7,6 +8,8 @@ import random
 
 @seeder(name="pedidos", dependencies=["clientes", "empleados"], priority=3)
 def generate_order_data(cant_of_orders = 150000):
+    require_positive(cant_of_orders, name="cant_of_orders")
+
     file = Path("./data/raw/pedidos.csv")
 
     if file.exists():
@@ -15,8 +18,12 @@ def generate_order_data(cant_of_orders = 150000):
 
     fake = Faker()
 
-    customers = pd.read_csv("./data/raw/clientes.csv", usecols=["id_cliente"])["id_cliente"]
-    employees = pd.read_csv("./data/raw/empleados.csv", usecols=["id_empleado"])["id_empleado"]
+    customers = read_dependency_csv(
+        "./data/raw/clientes.csv", usecols=["id_cliente"], context="pedidos"
+    )["id_cliente"]
+    employees = read_dependency_csv(
+        "./data/raw/empleados.csv", usecols=["id_empleado"], context="pedidos"
+    )["id_empleado"]
 
 
 

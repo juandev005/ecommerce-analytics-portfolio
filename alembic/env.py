@@ -2,6 +2,7 @@ from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
+from sqlalchemy.exc import OperationalError, SQLAlchemyError
 
 
 from alembic import context
@@ -10,6 +11,7 @@ from dotenv import load_dotenv
 import os
 
 from src.models import Base, Usuario, Rol, Direccion, UsuarioRol, Categoria, Proveedor, Producto, Almacen, Inventario, Cliente, Empleado, Pedido, DetallePedido, Pago, Envio, Factura, Devolucion, Resenia
+from src.core.exceptions import DatabaseConfigurationError, DatabaseConnectionError, MigrationError
 
 
 # this is the Alembic Config object, which provides
@@ -21,8 +23,15 @@ load_dotenv()
 
 database_url = os.getenv("DATABASE_URL")
 
-if database_url:
-    config.set_main_option("sqlalchemy.url", database_url)
+if not database_url:
+    raise DatabaseConfigurationError(
+        "La variable de entorno DATABASE_URL no está definida. "
+        "Defínela en el archivo .env antes de ejecutar las migraciones "
+        "(si no, Alembic intentaría usar el valor de ejemplo de alembic.ini).",
+        details={"env_var": "DATABASE_URL"},
+    )
+
+config.set_main_option("sqlalchemy.url", database_url)
 
 
 # Interpret the config file for Python logging.
@@ -79,13 +88,22 @@ def run_migrations_online() -> None:
         poolclass=pool.NullPool,
     )
 
-    with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata
-        )
+    try:
+        with connectable.connect() as connection:
+            context.configure(
+                connection=connection, target_metadata=target_metadata
+            )
 
-        with context.begin_transaction():
-            context.run_migrations()
+            with context.begin_transaction():
+                context.run_migrations()
+    except OperationalError as exc:
+        raise DatabaseConnectionError(
+            "No se pudo conectar a la base de datos. Verifica DATABASE_URL "
+            "y que el servidor esté disponible.",
+            cause=exc,
+        ) from exc
+    except SQLAlchemyError as exc:
+        raise MigrationError("Falló la ejecución de la migración", cause=exc) from exc
 
 
 if context.is_offline_mode():

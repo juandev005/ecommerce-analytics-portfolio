@@ -1,4 +1,5 @@
 from .base_seeder import seeder, set_seeder_done
+from src.core.errors import read_dependency_csv
 from faker import Faker
 import pandas as pd
 from pathlib import Path
@@ -15,8 +16,12 @@ def generate_review_data():
 
     fake = Faker('es_CO')
 
-    orders = pd.read_csv("./data/raw/pedidos.csv", usecols=["id_pedido","id_cliente", "estado"])
-    orders_details = pd.read_csv("./data/raw/detalle_pedidos.csv", usecols=["id_pedido", "id_producto"])
+    orders = read_dependency_csv(
+        "./data/raw/pedidos.csv", usecols=["id_pedido", "id_cliente", "estado"], context="resenias"
+    )
+    orders_details = read_dependency_csv(
+        "./data/raw/detalle_pedidos.csv", usecols=["id_pedido", "id_producto"], context="resenias"
+    )
 
     orders_delivered = orders[orders["estado"] == "Entregado"].to_dict("list")
 

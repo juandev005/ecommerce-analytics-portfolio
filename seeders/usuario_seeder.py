@@ -1,4 +1,5 @@
 from .base_seeder import seeder, set_seeder_done
+from src.core.errors import require_positive
 from datetime import datetime, timedelta
 from faker import Faker
 import pandas as pd
@@ -7,6 +8,8 @@ import random
 
 @seeder(name="usuarios", priority=1)
 def generate_user_data (cant_of_users = 25000):
+    require_positive(cant_of_users, name="cant_of_users")
+
     file = Path("./data/raw/usuarios.csv")
 
     if file.exists():

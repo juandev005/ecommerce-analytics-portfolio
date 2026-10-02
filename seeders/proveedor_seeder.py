@@ -1,4 +1,5 @@
 from .base_seeder import seeder, set_seeder_done
+from src.core.errors import require_positive
 from faker import Faker
 import pandas as pd
 from pathlib import Path
@@ -7,6 +8,8 @@ import random
 
 @seeder(name="proveedores", priority=1)
 def generate_company_data(cant_of_companies = 1000):
+    require_positive(cant_of_companies, name="cant_of_companies")
+
     file = Path("./data/raw/proveedores.csv")
 
     if file.exists():

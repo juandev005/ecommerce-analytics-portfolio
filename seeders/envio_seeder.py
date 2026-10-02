@@ -1,4 +1,5 @@
 from .base_seeder import seeder, set_seeder_done
+from src.core.errors import read_dependency_csv, require_columns
 from faker import Faker
 import pandas as pd
 from pathlib import Path
@@ -23,8 +24,11 @@ def generate_shipment_data():
         "Envía"
     ]
 
-    orders_csv = pd.read_csv("./data/raw/pedidos.csv")
-    address = pd.read_csv("./data/raw/direcciones.csv", usecols=["id_direccion", "id_usuario"])
+    orders_csv = read_dependency_csv("./data/raw/pedidos.csv", context="envios")
+    require_columns(orders_csv, ["id_pedido", "id_cliente", "estado"], context="envios (pedidos.csv)")
+    address = read_dependency_csv(
+        "./data/raw/direcciones.csv", usecols=["id_direccion", "id_usuario"], context="envios"
+    )
 
     orders = pd.concat([
         orders_csv[orders_csv["estado"] == "Enviado"],

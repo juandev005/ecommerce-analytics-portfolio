@@ -1,4 +1,5 @@
 from .base_seeder import seeder, set_seeder_done
+from src.core.errors import read_dependency_csv
 from datetime import datetime, timedelta
 import pandas as pd
 from pathlib import Path
@@ -13,7 +14,9 @@ def generate_employee_data():
         print("El archivo ya existe")
         return
 
-    users = pd.read_csv("./data/raw/usuarios.csv")["id_usuario"]
+    users = read_dependency_csv(
+        "./data/raw/usuarios.csv", usecols=["id_usuario"], context="empleados"
+    )["id_usuario"]
     position= [
         "Administrador",
         "Vendedor",

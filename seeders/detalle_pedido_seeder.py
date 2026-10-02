@@ -1,4 +1,5 @@
 from .base_seeder import seeder, set_seeder_done
+from src.core.errors import read_dependency_csv, require_columns
 import pandas as pd
 from pathlib import Path
 import random
@@ -11,12 +12,15 @@ def generate_order_detail_data():
         print("El archivo ya existe")
         return
 
-    orders = pd.read_csv("./data/raw/pedidos.csv")
-    products = pd.read_csv("./data/raw/productos.csv", usecols=["id_prducto", "precio"])
+    orders = read_dependency_csv("./data/raw/pedidos.csv", context="detalle_pedidos")
+    require_columns(orders, ["id_pedido", "total"], context="detalle_pedidos (pedidos.csv)")
+    products = read_dependency_csv(
+        "./data/raw/productos.csv", usecols=["id_producto", "precio"], context="detalle_pedidos"
+    )
 
     data = []
 
-    id_orders = orders.copy()["id_pedido"].id_pedido.to_list()
+    id_orders = orders.copy()["id_pedido"].to_list()
     prices = products.set_index("id_producto")["precio"].to_dict()
 
     for i in range(len(orders)):
