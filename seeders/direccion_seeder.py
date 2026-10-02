@@ -1,9 +1,13 @@
+import logging
+
 from .base_seeder import seeder, set_seeder_done
 from src.core.errors import require_positive, read_dependency_csv
 from faker import Faker
 import pandas as pd
 from pathlib import Path
 import random
+
+logger = logging.getLogger(__name__)
 
 
 @seeder(name="direcciones", dependencies=["usuarios"], priority=2)
@@ -13,7 +17,7 @@ def generate_address_data(cant_of_addresses = 68565):
     file = Path("./data/raw/direcciones.csv")
 
     if file.exists():
-        print("El archivo ya existe")
+        logger.info("El archivo ya existe, se omite generación: %s", file)
         return
 
     fake = Faker('es_CO')

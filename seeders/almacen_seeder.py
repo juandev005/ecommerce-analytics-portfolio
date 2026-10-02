@@ -1,9 +1,14 @@
+import logging
+
 from .base_seeder import seeder, set_seeder_done
 from src.core.errors import require_positive
 from faker import Faker
 import pandas as pd
 from pathlib import Path
 import random
+
+logger = logging.getLogger(__name__)
+
 
 @seeder(name="almacenes", priority=1)
 def generate_warehouse_data(cant_of_warehouses = 50):
@@ -14,7 +19,7 @@ def generate_warehouse_data(cant_of_warehouses = 50):
     file = Path("./data/raw/almacenes.csv")
 
     if file.exists():
-        print("El archivo ya existe")
+        logger.info("El archivo ya existe, se omite generación: %s", file)
         return
 
     warehouses = [

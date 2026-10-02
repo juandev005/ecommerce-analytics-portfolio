@@ -1,3 +1,5 @@
+import logging
+
 from .base_seeder import seeder, set_seeder_done
 from src.core.errors import read_dependency_csv
 from faker import Faker
@@ -5,12 +7,15 @@ import pandas as pd
 from pathlib import Path
 import random
 
+logger = logging.getLogger(__name__)
+
+
 @seeder(name="facturas", dependencies=["pedidos"], priority=4)
 def generate_bill_data():
     file = Path("./data/raw/factura.csv")
 
     if file.exists():
-        print("El archivo ya existe")
+        logger.info("El archivo ya existe, se omite generación: %s", file)
         return
 
     fake = Faker()

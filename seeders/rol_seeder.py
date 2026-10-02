@@ -1,7 +1,11 @@
+import logging
+
 from .base_seeder import seeder, set_seeder_done
 import pandas as pd
 from pathlib import Path
 import random
+
+logger = logging.getLogger(__name__)
 
 
 @seeder(name="roles", priority=1)
@@ -9,7 +13,7 @@ def generate_role_data ():
     file = Path("./data/raw/roles.csv")
 
     if file.exists():
-        print("El archivo ya existe")
+        logger.info("El archivo ya existe, se omite generación: %s", file)
         return
 
     roles = [

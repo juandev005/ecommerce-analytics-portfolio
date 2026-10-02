@@ -1,5 +1,10 @@
+import logging
+
 from .base_seeder import get_seeders, get_seeder, set_seeder_done, get_seeders_done
 from src.core.exceptions import SeederError, SeederDependencyError, SeederExecutionError, SeederBatchError
+from src.core.logging_config import configure_logging
+
+logger = logging.getLogger("seeders")
 
 
 def seeding_seeder(name: str) -> None:
@@ -28,7 +33,7 @@ def seeding_seeder(name: str) -> None:
         ) from exc
 
     set_seeder_done(name, True)
-    print(f"Seeder '{name}' ejecutado con éxito")
+    logger.info("Seeder '%s' ejecutado con éxito", name)
 
 
 def seeding__with_dependencies(name: str, _resolving: frozenset[str] = frozenset()) -> None:
@@ -66,7 +71,7 @@ def seeding__with_dependencies(name: str, _resolving: frozenset[str] = frozenset
         ) from exc
 
     set_seeder_done(name, True)
-    print(f"Seeder '{name}' ejecutado con éxito (dependencias: {seeder_def.dependencies})")
+    logger.info("Seeder '%s' ejecutado con éxito (dependencias: %s)", name, seeder_def.dependencies)
 
 
 def seeding_all() -> None:
@@ -84,7 +89,7 @@ def seeding_all() -> None:
         try:
             seeding__with_dependencies(name)
         except SeederError as exc:
-            print(f"Seeder '{name}' falló: {exc}")
+            logger.error("Seeder '%s' falló: %s", name, exc)
             errors[name] = exc
 
     if errors:
@@ -93,8 +98,9 @@ def seeding_all() -> None:
             details={"failures": {k: str(v) for k, v in errors.items()}},
         )
 
-    print("Todos los seeders se ejecutaron con éxito")
+    logger.info("Todos los seeders se ejecutaron con éxito")
 
 
 if __name__ == "__main__":
+    configure_logging()
     seeding_all()
