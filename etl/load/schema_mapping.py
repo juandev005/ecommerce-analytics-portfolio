@@ -67,6 +67,7 @@ def prepare_for_load(name: str, df: pd.DataFrame) -> tuple[str, pd.DataFrame]:
 
     if name == "envios":
         df["id_direccion"] = pd.to_numeric(df["id_direccion"], errors="coerce").astype("Int64")
+        df.loc[df["id_direccion"] == 0, "id_direccion"] = pd.NA
         sin_direccion = df["id_direccion"].isna().sum()
         if sin_direccion:
             logger.warning("envios: se descartan %d filas sin id_direccion valido", sin_direccion)

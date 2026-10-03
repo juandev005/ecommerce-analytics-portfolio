@@ -1,6 +1,6 @@
 import logging
 
-from src.core.exceptions import AppError
+from src.core.exceptions import AppError, ETLError, ETLBatchError
 from src.core.logging_config import configure_logging
 
 from etl.extract.usuarios_extractor import extract_usuarios
@@ -78,9 +78,21 @@ def run_pipeline() -> None:
 
     validate_referential_integrity(tables)
 
+    errors: dict[str, ETLError] = {}
+
     for name, df in tables.items():
-        table_name, df = prepare_for_load(name, df)
-        load_to_postgres(df, table_name)
+        try:
+            table_name, df = prepare_for_load(name, df)
+            load_to_postgres(df, table_name)
+        except AppError as exc:
+            logger.error("Carga de '%s' falló: %s", name, exc)
+            errors[name] = exc
+
+    if errors:
+        raise ETLBatchError(
+            f"{len(errors)} tabla(s) fallaron al cargar: {sorted(errors)}",
+            details={"failures": {k: str(v) for k, v in errors.items()}},
+        )
 
     logger.info("Pipeline ETL completado: %d tablas cargadas", len(tables))
 
