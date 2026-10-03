@@ -6,7 +6,12 @@ from .database_errors import (
     DatabaseConfigurationError,
     MigrationError,
 )
-from .validation_errors import ValidationError, SchemaValidationError, FieldValidationError
+from .validation_errors import (
+    ValidationError,
+    SchemaValidationError,
+    FieldValidationError,
+    ReferentialIntegrityError,
+)
 from .seeder_errors import (
     SeederError,
     SeederNotFoundError,
@@ -26,6 +31,7 @@ __all__ = [
     "ValidationError",
     "SchemaValidationError",
     "FieldValidationError",
+    "ReferentialIntegrityError",
     "SeederError",
     "SeederNotFoundError",
     "SeederDependencyError",
