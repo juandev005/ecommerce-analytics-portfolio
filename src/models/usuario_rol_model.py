@@ -1,5 +1,6 @@
+from datetime import date
 from typing import List
-from sqlalchemy import Integer, String, DateTime, func, ForeignKey
+from sqlalchemy import Integer, String, Date, DateTime, func, ForeignKey
 from sqlalchemy.orm import  Mapped, mapped_column, relationship
 from .base_model import Base
 
@@ -7,7 +8,7 @@ class UsuarioRol(Base):
     __tablename__ = 'usuarios_roles'
     usuario_id: Mapped[int] = mapped_column(ForeignKey("usuarios.id"), primary_key=True)
     rol_id: Mapped[int] = mapped_column(ForeignKey("roles.id"), primary_key=True)
-    fecha_ingreso: Mapped[str] = mapped_column(String(255), nullable=False)
+    fecha_ingreso: Mapped[date] = mapped_column(Date, nullable=False)
     created_at: Mapped[str] = mapped_column(DateTime(timezone=True), nullable=False, server_default=func.now()) 
     updated_at: Mapped[str] = mapped_column(DateTime(timezone=True), nullable=False, server_default=func.now(), onupdate=func.now())
 

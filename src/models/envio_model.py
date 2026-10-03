@@ -1,5 +1,6 @@
+from datetime import date
 from typing import List
-from sqlalchemy import Integer, String, DateTime, func, ForeignKey
+from sqlalchemy import Integer, String, Date, DateTime, func, ForeignKey
 from sqlalchemy.orm import  Mapped, mapped_column, relationship
 from .base_model import Base
 
@@ -11,8 +12,8 @@ class Envio (Base):
     id_direccion:Mapped[int] = mapped_column(Integer, ForeignKey("direcciones.id"), nullable=False)
     empresa:Mapped[int] = mapped_column(String(255), nullable=False)
     numero:Mapped[int] = mapped_column(String(255), nullable=False)
-    fecha_envio:Mapped[int] = mapped_column(String(255), nullable=False)
-    fecha_entrega:Mapped[int] = mapped_column(String(255), nullable=False)
+    fecha_envio:Mapped[date] = mapped_column(Date, nullable=False)
+    fecha_entrega:Mapped[date] = mapped_column(Date, nullable=False)
     estado:Mapped[int] = mapped_column(String(255), nullable=False)
 
     created_at:Mapped[int] = mapped_column(DateTime(timezone=True), nullable=False, server_default=func.now())
