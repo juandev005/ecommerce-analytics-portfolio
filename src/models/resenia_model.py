@@ -11,6 +11,7 @@ class Resenia(Base):
     id_cliente:Mapped[int] = mapped_column(Integer, ForeignKey("clientes.id"), nullable=False)
     calificacion:Mapped[str] = mapped_column(String(255), nullable=False)
     comentario:Mapped[str] = mapped_column(String(255), nullable=False)
+    fecha:Mapped[str] = mapped_column(String(255), nullable=False)
 
     created_at:Mapped[str] = mapped_column(DateTime(timezone=True), nullable=False, server_default=func.now())
     updated_at:Mapped[str] = mapped_column(DateTime(timezone=True), nullable=False, server_default=func.now(), onupdate=func.now())
