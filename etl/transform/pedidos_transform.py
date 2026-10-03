@@ -2,7 +2,8 @@ import logging
 
 import pandas as pd
 
-from src.core.errors import require_columns, require_non_empty
+from src.core.errors import require_columns, require_non_empty, normalize_categorical
+from etl.transform.enums import EstadoPedido
 
 logger = logging.getLogger(__name__)
 
@@ -14,6 +15,7 @@ def clean_pedidos(df: pd.DataFrame) -> pd.DataFrame:
     df = df.drop_duplicates(subset="id_pedido")
     df["total"] = pd.to_numeric(df["total"], errors="coerce").fillna(0.0).astype(float)
     df["fecha_pedido"] = pd.to_datetime(df["fecha_pedido"], errors="coerce")
+    df = normalize_categorical(df, "estado", EstadoPedido, default=EstadoPedido.PENDIENTE)
 
     df = df.dropna(subset=['id_pedido', 'id_cliente', 'id_empleado', 'fecha_pedido'])
 

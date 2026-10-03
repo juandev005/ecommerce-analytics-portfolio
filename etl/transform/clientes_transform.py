@@ -2,7 +2,8 @@ import logging
 
 import pandas as pd
 
-from src.core.errors import require_columns, require_non_empty
+from src.core.errors import require_columns, require_non_empty, normalize_categorical
+from etl.transform.enums import NivelCliente
 
 logger = logging.getLogger(__name__)
 
@@ -12,7 +13,7 @@ def clean_clientes(df: pd.DataFrame) -> pd.DataFrame:
 
     df = df.drop_duplicates(subset="id_cliente")
 
-    df["nivel"] = df["nivel"].fillna("Sin nivel")
+    df = normalize_categorical(df, "nivel", NivelCliente, default=NivelCliente.DESCONOCIDO)
     df["puntos"] = df["puntos"].fillna(0).astype(int)
     df["fecha_ingreso"] = pd.to_datetime(df["fecha_ingreso"], errors="coerce")
 

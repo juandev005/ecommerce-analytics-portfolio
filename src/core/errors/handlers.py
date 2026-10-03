@@ -38,6 +38,12 @@ def require_positive(value: int, *, name: str) -> None:
         )
 
 
+def normalize_categorical(df: pd.DataFrame, column: str, enum_cls, *, default) -> pd.DataFrame:
+    valid_values = {member.value for member in enum_cls}
+    df[column] = df[column].where(df[column].isin(valid_values), default.value)
+    return df
+
+
 def read_dependency_csv(path: str, *, usecols: list[str] | None = None, context: str) -> pd.DataFrame:
     file = Path(path)
 
