@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List
 from sqlalchemy import Integer, String, DateTime, func, ForeignKey
 from sqlalchemy.orm import  Mapped, mapped_column, relationship
@@ -9,7 +10,7 @@ class Cliente (Base):
     id_usuario:Mapped[int] = mapped_column(Integer, ForeignKey("usuarios.id"))
     nivel:Mapped[str] = mapped_column(String(255), nullable=False)
     puntos:Mapped[int] = mapped_column(Integer, nullable=False)
-    fecha_ingreso:Mapped[str] = mapped_column(String(255), nullable=False)
+    fecha_ingreso:Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
 
     created_at: Mapped[str] = mapped_column(DateTime(timezone=True), nullable=False, server_default=func.now())
     updated_at: Mapped[str] = mapped_column(DateTime(timezone=True), nullable=False, server_default=func.now(), onupdate=func.now())

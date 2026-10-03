@@ -1,5 +1,6 @@
+from datetime import date, datetime
 from typing import List
-from sqlalchemy import Integer, String, DateTime, func
+from sqlalchemy import Integer, String, Date, DateTime, func
 from sqlalchemy.orm import  Mapped, mapped_column, relationship
 from .base_model import Base
 
@@ -12,8 +13,8 @@ class Usuario(Base):
     apellido: Mapped[str] = mapped_column(String(255), nullable=False)
     correo: Mapped[str] = mapped_column(String(255), nullable=False)
     telefono: Mapped[str] = mapped_column(String(255), nullable=False)
-    fecha_nacimiento: Mapped[str] = mapped_column(String(255), nullable=False)
-    fecha_registro: Mapped[str] = mapped_column(String(255), nullable=False)
+    fecha_nacimiento: Mapped[date] = mapped_column(Date, nullable=False)
+    fecha_registro: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
     estado: Mapped[str] = mapped_column(String(255), nullable=False)
 
     created_at: Mapped[str] = mapped_column(DateTime(timezone=True), nullable=False, server_default=func.now())

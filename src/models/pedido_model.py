@@ -1,5 +1,6 @@
+from datetime import date
 from typing import List
-from sqlalchemy import Integer, String, DateTime, func, ForeignKey
+from sqlalchemy import Integer, String, Date, DateTime, func, ForeignKey, Float
 from sqlalchemy.orm import  Mapped, mapped_column, relationship
 from .base_model import Base
 
@@ -9,9 +10,9 @@ class Pedido (Base):
     id:Mapped[int] = mapped_column(Integer, primary_key=True)
     id_cliente:Mapped[int] = mapped_column(Integer, ForeignKey("clientes.id"), nullable=False)
     id_empleado:Mapped[int] = mapped_column(Integer, ForeignKey("empleados.id"), nullable=False)
-    fecha:Mapped[str] = mapped_column(String(255), nullable=False)
+    fecha:Mapped[date] = mapped_column(Date, nullable=False)
     estado:Mapped[str] = mapped_column(String(255), nullable=False)
-    total:Mapped[str] = mapped_column(String(255), nullable=False)
+    total:Mapped[float] = mapped_column(Float, nullable=False)
 
     created_at:Mapped[str] = mapped_column(DateTime(timezone=True), nullable=False, server_default=func.now())
     updated_at:Mapped[str] = mapped_column(DateTime(timezone=True), nullable=False, server_default=func.now(), onupdate=func.now())
