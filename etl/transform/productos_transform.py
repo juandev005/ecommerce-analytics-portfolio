@@ -2,7 +2,8 @@ import logging
 
 import pandas as pd
 
-from src.core.errors import require_columns, require_non_empty
+from src.core.errors import require_columns, require_non_empty, normalize_categorical
+from etl.transform.enums import EstadoProducto
 
 logger = logging.getLogger(__name__)
 
@@ -15,6 +16,7 @@ def clean_productos(df: pd.DataFrame) -> pd.DataFrame:
     df["precio"] = pd.to_numeric(df["precio"], errors="coerce").fillna(0.0).astype(float)
     df["stock"] = pd.to_numeric(df["stock"], errors="coerce").fillna(0).astype(int)
     df["peso"] = pd.to_numeric(df["peso"], errors="coerce").fillna(0.0).astype(float)
+    df = normalize_categorical(df, "estado", EstadoProducto, default=EstadoProducto.DESCONOCIDO)
 
     df = df.dropna(subset=['id_producto', 'id_categoria', 'id_proveedor'])
 
