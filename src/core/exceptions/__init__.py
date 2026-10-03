@@ -20,6 +20,7 @@ from .seeder_errors import (
     SeederFileError,
     SeederBatchError,
 )
+from .etl_errors import ETLError, ETLBatchError
 
 __all__ = [
     "AppError",
@@ -38,4 +39,6 @@ __all__ = [
     "SeederExecutionError",
     "SeederFileError",
     "SeederBatchError",
+    "ETLError",
+    "ETLBatchError",
 ]
