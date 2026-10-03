@@ -13,6 +13,7 @@ def clean_categorias(df: pd.DataFrame) -> pd.DataFrame:
 
     df = df.drop_duplicates(subset="id_categoria")
     df["id_categoria_padre"] = pd.to_numeric(df["id_categoria_padre"], errors="coerce").astype("Int64")
+    df.loc[df["id_categoria_padre"] == 0, "id_categoria_padre"] = pd.NA
 
     df = df.dropna(subset=['id_categoria'])
 
