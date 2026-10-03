@@ -11,7 +11,8 @@ class Empleado (Base):
     id_usuario: Mapped[int] = mapped_column(Integer, ForeignKey("usuarios.id"))
     cargo: Mapped[str] = mapped_column(String(255), nullable=False)
     salario: Mapped[int] = mapped_column(Integer, nullable=False)
-    
+    fecha_contratacion: Mapped[str] = mapped_column(String(255), nullable=False)
+
     created_at: Mapped[str] = mapped_column(DateTime(timezone=True), nullable=False, server_default=func.now())
     updated_at: Mapped[str] =  mapped_column(DateTime(timezone=True), nullable=False, server_default=func.now(), onupdate=func.now())
 

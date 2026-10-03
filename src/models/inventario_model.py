@@ -10,6 +10,7 @@ class Inventario (Base):
     id_producto:Mapped[int] = mapped_column(Integer, ForeignKey("productos.id"), nullable=False)
     id_almacen:Mapped[int] = mapped_column(Integer,ForeignKey("almacenes.id"), nullable=False)
     cantidad:Mapped[str] = mapped_column(String(255), nullable=False)
+    fecha_ingreso:Mapped[str] = mapped_column(String(255), nullable=False)
 
     created_at = mapped_column(DateTime(timezone=True), nullable=False, server_default=func.now())
     updated_at = mapped_column(DateTime(timezone=True), nullable=False, server_default=func.now(), onupdate=func.now())

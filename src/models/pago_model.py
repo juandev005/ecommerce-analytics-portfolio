@@ -8,8 +8,8 @@ class Pago(Base):
 
     id:Mapped[int] = mapped_column(Integer, primary_key=True)
     id_pedido:Mapped[int] = mapped_column(Integer, ForeignKey("pedidos.id"), nullable=False)
-    metodo_pago:Mapped[str] = mapped_column(String(255), nullable=False)
-    fecha_pago:Mapped[str] = mapped_column(String(255), nullable=False)
+    metodo:Mapped[str] = mapped_column(String(255), nullable=False)
+    fecha:Mapped[str] = mapped_column(String(255), nullable=False)
     monto:Mapped[str] = mapped_column(String(255), nullable=False)
     estado:Mapped[str] = mapped_column(String(255), nullable=False)
 

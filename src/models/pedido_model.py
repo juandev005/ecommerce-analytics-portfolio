@@ -9,7 +9,7 @@ class Pedido (Base):
     id:Mapped[int] = mapped_column(Integer, primary_key=True)
     id_cliente:Mapped[int] = mapped_column(Integer, ForeignKey("clientes.id"), nullable=False)
     id_empleado:Mapped[int] = mapped_column(Integer, ForeignKey("empleados.id"), nullable=False)
-    fecha_pedido:Mapped[str] = mapped_column(String(255), nullable=False)
+    fecha:Mapped[str] = mapped_column(String(255), nullable=False)
     estado:Mapped[str] = mapped_column(String(255), nullable=False)
     total:Mapped[str] = mapped_column(String(255), nullable=False)
 

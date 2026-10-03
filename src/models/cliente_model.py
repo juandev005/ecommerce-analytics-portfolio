@@ -7,7 +7,9 @@ class Cliente (Base):
     __tablename__ = 'clientes'
     id:Mapped[int] = mapped_column(Integer, primary_key=True)
     id_usuario:Mapped[int] = mapped_column(Integer, ForeignKey("usuarios.id"))
-    nivel_cliente:Mapped[str] = mapped_column(String(255), nullable=False)
+    nivel:Mapped[str] = mapped_column(String(255), nullable=False)
+    puntos:Mapped[int] = mapped_column(Integer, nullable=False)
+    fecha_ingreso:Mapped[str] = mapped_column(String(255), nullable=False)
 
     created_at: Mapped[str] = mapped_column(DateTime(timezone=True), nullable=False, server_default=func.now())
     updated_at: Mapped[str] = mapped_column(DateTime(timezone=True), nullable=False, server_default=func.now(), onupdate=func.now())

@@ -8,7 +8,7 @@ class Factura(Base):
 
     id:Mapped[int] = mapped_column(Integer, primary_key=True)
     id_pedido:Mapped[int] = mapped_column(Integer, ForeignKey("pedidos.id"), nullable=False)
-    numero_factura:Mapped[int] = mapped_column(String(255), nullable=False)
+    numero:Mapped[int] = mapped_column(String(255), nullable=False)
     fecha_emision:Mapped[int] = mapped_column(String(255), nullable=False)
     impuestos:Mapped[int] = mapped_column(String(255), nullable=False)
     total:Mapped[int] = mapped_column(String(255), nullable=False)
