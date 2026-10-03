@@ -43,6 +43,7 @@ from etl.transform.devoluciones_transform import clean_devoluciones
 
 from etl.validate.referential_integrity import validate_referential_integrity
 from etl.load.loaders import load_to_postgres
+from etl.load.schema_mapping import prepare_for_load
 
 logger = logging.getLogger("etl")
 
@@ -78,7 +79,8 @@ def run_pipeline() -> None:
     validate_referential_integrity(tables)
 
     for name, df in tables.items():
-        load_to_postgres(df, name)
+        table_name, df = prepare_for_load(name, df)
+        load_to_postgres(df, table_name)
 
     logger.info("Pipeline ETL completado: %d tablas cargadas", len(tables))
 
